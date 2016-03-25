@@ -36,7 +36,8 @@ public class NQueens {
       }
     }
   }
-  boolean alignedsolution(ArrayList<Integer> diag45, ArrayList<Integer> diag135){
+  boolean otherDiag(int j, int k){
+	  boolean aux = true;
     return true;
   }
 
