@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import clock.Clock;
 
 public class NQueens {
+  private ArrayList<Integer> times = new ArrayList<Integer>();
+  private ArrayList<ArrayList<Integer>> solutions = new ArrayList<ArrayList<Integer>>();
   private ArrayList<Integer> sol = new ArrayList<Integer>();
   private int counter = 0;
   private Clock timer = new Clock();
@@ -13,32 +15,33 @@ public class NQueens {
       sol.add(i);
     }
     timer.start();
-    solve(0, new ArrayList<Integer>() , new ArrayList<Integer>(), new ArrayList<Integer>());
+    solve(0, new Diagonal());
   }
-  private void solve(int k, ArrayList<Integer> col, ArrayList<Integer> diag45, ArrayList<Integer> diag135){
+  private void solve(int k, Diagonal diagonals){
     if (k == 8){
       timer.stop();
+      getTimes().add((int)timer.elapsedTime());
+      solutions.add(new ArrayList<Integer>(sol));
       System.out.println(timer.elapsedTime());
       System.out.println("" + ++counter + sol);
     }
     else{
       for(int j = 1; j<=8; j++){
-        if(!col.contains(j) && !diag45.contains(j-k) && !diag135.contains(j+k)){
+        if(diagonals.testDiagonal(j, k)){
           sol.set(k, j);
-          col.add(j);
-          diag45.add(j-k);
-          diag135.add(j+k);
-          solve(k+1, col, diag45, diag135);
-          col.remove(col.size()-1);
-          diag45.remove(diag45.size()-1);
-          diag135.remove(diag135.size()-1);
+          diagonals.addDiagonal(j, k);
+          solve(k+1, diagonals);
+          diagonals.removeDiagonal();
         }
       }
     }
   }
-  boolean otherDiag(int j, int k){
-	  boolean aux = true;
-    return true;
+  
+  public ArrayList<Integer> getTimes () {
+    return times;
   }
-
+  
+  public ArrayList<ArrayList<Integer>> getSolutions () {
+    return solutions;
+  }
 }
